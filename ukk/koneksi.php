@@ -4,4 +4,3 @@ $koneksi = mysqli_connect("localhost","root","","ukk");
    echo "data gagal: " .mysqli_connect_error();
  }
 ?>
-

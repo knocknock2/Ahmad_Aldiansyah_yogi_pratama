@@ -1,19 +1,57 @@
 <?php
-include("koneksi.php");
+include "koneksi.php";
+session_start();
 
 if (isset($_POST['login'])) {
-    $namaPelanggan = $_POST['namaPelanggan'];
-    $nomoeTelpon   = $_POST['nomoeTelpon'];
+    $namaPelanggan = $_POST['username'];
+    $password = $_POST['password'];
 
-    $query = mysqli_query($koneksi, "SELECT * FROM pelanggan WHERE namaPelanggan='$namaPelanggan' AND nomoeTelpon='$nomoeTelpon'");
-
-    if (mysqli_num_rows($query) > 0) {
-        header("Location: crud-petugas.php");
+    $q = mysqli_query($koneksi, "SELECT * FROM petugas WHERE username='$namaPelanggan' AND password='$password'");
+    if (mysqli_num_rows($q) == 1) {
+        $d = mysqli_fetch_assoc($q);
+        $_SESSION['user_id'] = $d['id'];
+        $_SESSION['namauser'] = $d['namauser'];
+        $_SESSION['role'] = $d['role'];
+        header("Location: index.php");
     } else {
-        echo "Login gagal";
+        echo "<script>alert('Login Gagal!');</script>";
     }
 }
 ?>
+ <link rel="stylesheet" href="style.css?v=99">
+<form method="POST">
+    <h3>Login Kasir</h3>
+    username: <input type="text" name="username" required><br><br>
+    password: <input type="password" name="password" required><br><br>
+    <button type="submit" name="login">Login</button>
+</form>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- 
 
 <!DOCTYPE html>
 <html lang="id">
@@ -27,21 +65,19 @@ if (isset($_POST['login'])) {
         <form action="" method="post">
             <fieldset>
                 <div>
-                    <label for="namaPelanggan">nama pelanggan</label><br>
-                    <input type="text" id="namaPelanggan" name="namaPelanggan" required>
+                    <label for="username">nama </label><br>
+                    <input type="text" id="username" name="username" required>
                 </div>
                 <br>
                 <div>
-                    <label for="nomoeTelpon">nomor telepon</label><br>
-                    <input type="text" id="nomoeTelpon" name="nomoeTelpon" required>
+                    <label for="password">password</label><br>
+                    <input type="text" id="password" name="password" required>
                 </div>
                 <br>
                 <div>
                     <button type="submit" name="login">login</button>
                 </div>
             </fieldset>
-        </form>
-        <p>kalo belum punya akun silahkan daftar di sini dulu yaww <a href="register.php">daftar di sini</a></p>
-    </div>
+        </form></div>
 </body>
-</html>
+</html> -->

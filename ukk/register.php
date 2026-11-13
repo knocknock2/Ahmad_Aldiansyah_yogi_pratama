@@ -1,20 +1,71 @@
 <?php
-include("koneksi.php");
+include "koneksi.php";
+session_start();
 
-if (isset($_POST['submit'])) {
-    $namaPelanggan = $_POST['namaPelanggan'];
-    $alamat        = $_POST['alamat'];
-    $nomoeTelpon   = $_POST['nomoeTelpon'];
+if (isset($_POST['daftar'])) {
+    $allowedRoles = ['administrator', 'kasir', 'pelanggan'];
+    $role = in_array($_POST['role'], $allowedRoles) ? $_POST['role'] : 'kasir';
 
-    $query = mysqli_query($koneksi, "INSERT INTO pelanggan (namaPelanggan, alamat, nomoeTelpon) VALUES ('$namaPelanggan', '$alamat', '$nomoeTelpon')");
+    mysqli_query(
+        $koneksi,
+        "INSERT INTO petugas (usn, username, password, role) VALUES (
+            '{$_POST['usn']}',
+            '{$_POST['username']}',
+            '{$_POST['password']}',
+            '{$role}'
+        )"
+    );
 
-    if ($query) {
-        header("location: index.php");
-    } else {
-        echo "Gagal : " . mysqli_error($koneksi);
-    }
+    echo "<script>alert('Berhasil!'); window.location='login.php';</script>";
+    exit();
 }
 ?>
+<link rel="stylesheet" href="style.css?v=99">
+<a href="index.php">Kembali</a>
+
+<form method="POST">
+    <h3>Registrasi User</h3>
+    Nama    : <input type="text" name="usn" required><br><br>
+    Username: <input type="text" name="username" required><br><br>
+    Password: <input type="password" name="password" required><br><br>
+    Role    : <select name="role" required>
+                <option value="administrator">Administrator</option>
+                <option value="kasir">Petugas (Kasir)</option>
+                <option value="pelanggan">Pelanggan</option>
+             </select><br><br>
+
+    <button type="submit" name="daftar">Simpan</button>
+</form>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- 
 
 <!DOCTYPE html>
 <html lang="en">
@@ -27,18 +78,22 @@ if (isset($_POST['submit'])) {
         <form action="" method="post">
             <fieldset>
                 <div>
-                    <label for="namaPelanggan">Nama Pelanggan</label><br>
-                    <input type="text" id="namaPelanggan" name="namaPelanggan" required>
+                    <label for="usn">Nama user</label><br>
+                    <input type="text" id="usn" name="usn" required>
                 </div>
                 <br>
                 <div>
-                    <label for="alamat">Masukkan Alamat Anda</label><br>
-                    <input type="text" name="alamat" id="alamat" required>
+                    <label for="username">Masukkan nama akun anda</label><br>
+                    <input type="text" name="username" id="username" required>
                 </div>
                 <br>
                 <div>
-                    <label for="nomoeTelpon">Nomor Telepon</label><br>
-                    <input type="text" name="nomoeTelpon" id="nomoeTelpon" required>
+                    <label for="password">password</label><br>
+                    <input type="text" name="password" id="password" required>
+                </div>
+                <div>
+                    <label for="role">isi tugas anda. sebagai admin/petugas/pelanggan</label>
+                    <input type="text" name="role" id="role" required>
                 </div>
                 <br>
                 <div>
@@ -48,4 +103,4 @@ if (isset($_POST['submit'])) {
         </form>
     </div>
 </body>
-</html>
+</html> -->

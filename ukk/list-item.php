@@ -3,14 +3,14 @@
 <html lang="id">
 <head>
     <title>makanan yang sudah di data</title>
-    <link rel="stylesheet" href="style.css"> 
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
 <div class="card" style="max-width: 700px;"> 
     <h1>makanan yang sudah di daftar</h1>
 
-    <a href="pendataan-item.php" > Tambah Baru</a>
+    <a href="pendataan-item.php"> Tambah Baru</a>
 
     <table>
         <thead>
@@ -19,7 +19,7 @@
                 <th>nama item</th>
                 <th>harga</th>
                 <th>stok</th>
-                
+                <th>Aksi</th>
             </tr>
         </thead>
         <tbody>
@@ -31,11 +31,14 @@
             while ($item = mysqli_fetch_array($query)) {
                 echo "<tr>";
                 echo "<td>" . $no++ . "</td>";
-                echo "<td>" .($item['nama']) . "</td>";
-                echo "<td>" .($item['harga']) . "</td>";
-                echo "<td>" .($item['stok']) . "</td>";
-                echo "<td style='text-align: center;'>";
-                echo "</td>";
+                echo "<td>" . htmlspecialchars($item['nama']) . "</td>";
+                echo "<td>" . htmlspecialchars($item['harga']) . "</td>";
+                echo "<td>" . htmlspecialchars($item['stok']) . "</td>";
+                echo "<td>
+                        <a href='beli.php?nama=" . urlencode($item['nama']) . "' onclick='return confirm(\"Beli makanan ini?\")'>Beli</a> | 
+                        <a href='edit-item.php?nama=" . urlencode($item['nama']) . "'>Edit</a> | 
+                        <a href='hapus-item.php?nama=" . urlencode($item['nama']) . "' onclick='return confirm(\"Yakin ingin menghapus?\")'>Hapus</a>
+                      </td>";
                 echo "</tr>";
             }
             ?>
